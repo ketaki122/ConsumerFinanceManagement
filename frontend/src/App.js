@@ -1,4 +1,5 @@
 import './App.css';
+import './styles.css';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom' 
 import CFMLogin from "./components/CFMLogin";
 import Homepage from "./components/homepage";
