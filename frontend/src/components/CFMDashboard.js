@@ -36,13 +36,13 @@ export class CFMDashboard extends Component {
         balance: 30000,
       },
       productsPurchased: [
-        {
+        { productId:1,
           productName: "Puma Jacket",
           productCost: 3000,
           productType: "clothing",
           datePurchased: Moment("02-11-2022").format("DD-MM-YY"),
         },
-        {
+        {productId:3,
           productName: "Redmi Note 5",
           productCost: 7000,
           productType: "electronics",

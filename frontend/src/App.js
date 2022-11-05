@@ -3,6 +3,7 @@ import './styles.css';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom' 
 import CFMLogin from "./components/CFMLogin";
 import Homepage from "./components/homepage";
+import React, { useState } from 'react'; 
 import CFMRegistration from "./components/CFMRegistration";
 import CFMAdminDashboard from "./components/CFMAdminDashboard";
 import CFMAdminLogin from "./components/CFMAdminLogin";
@@ -13,6 +14,10 @@ import CFMProductInfo from "./components/CFMProductInfo";
 import CFMProductList from "./components/CFMProductList";
 
 function App() {
+  const userName="Ram@123";
+  
+
+  
   return (
     <Router>
     <div>
@@ -24,10 +29,10 @@ function App() {
         <Route path="/AdminDashboard" element={<CFMAdminDashboard />} />
         <Route path="/AdminLogin" element={<CFMAdminLogin/>} />
         <Route path="/ChangePassword" element={<CFMChangePassword />} />
-        <Route path="/DashBoard" element={<CFMDashboard />} />
+        <Route path="/DashBoard" element={<CFMDashboard user={userName}/>} />
         <Route path="/ForgotPassword" element={<CFMForgotPassword />} />
-        <Route path="/Productinfo" element={<CFMProductInfo />} />
-        <Route path="/ProductList" element={<CFMProductList />} />
+        <Route path="/Productinfo" element={<CFMProductInfo user={userName}  />} />
+        <Route path="/ProductList" element={<CFMProductList user={userName}  />} />
         
       </Routes>
     </div>
