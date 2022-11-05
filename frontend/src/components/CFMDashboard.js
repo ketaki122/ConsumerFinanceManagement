@@ -102,7 +102,7 @@ export class CFMDashboard extends Component {
                 aria-label="menu"
                 sx={{ mr: "70%", flexGrow: 0 }}
               >
-                <LocalMallIcon style={{ padding: "10px" }} />
+                <LocalMallIcon  />
 
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
@@ -129,7 +129,7 @@ export class CFMDashboard extends Component {
             </Toolbar>
           </AppBar>
         </Box>
-        <div className="container">
+        <div >
           <div className="mycard">
             <Item key={1} elevation={12}>
               <Grid container>
@@ -145,10 +145,11 @@ export class CFMDashboard extends Component {
                 <Grid item xs={7}>
                   <p className="value">
                     {this.state.cardDetails.cardNumber}
-                    <br />
+                   
                   </p>
                 </Grid>
               </Grid>
+              <br />
               <Grid container>
                 <Grid item xs={3}>
                   <p className="attribute">Name :</p>
@@ -156,10 +157,11 @@ export class CFMDashboard extends Component {
                 <Grid item xs={7}>
                   <p className="value">
                     {this.state.cardDetails.cardHolder}
-                    <br />
+                 
                   </p>
                 </Grid>
               </Grid>
+              <br />
               <Grid container>
                 <Grid item xs={3}>
                   <p className="attribute">Valid till :</p>
@@ -167,10 +169,11 @@ export class CFMDashboard extends Component {
                 <Grid item xs={7}>
                   <p className="value">
                     {this.state.cardDetails.validity}
-                    <br />
+               
                   </p>
                 </Grid>
               </Grid>
+              <br />
               <Grid container>
                 <Grid item xs={3}>
                   <p className="attribute">Card Type :</p>
@@ -178,10 +181,11 @@ export class CFMDashboard extends Component {
                 <Grid item xs={7}>
                   <p className="value">
                     {this.state.cardDetails.cardType}
-                    <br />
+                  
                   </p>
                 </Grid>
               </Grid>
+              <br />
               <Grid container>
                 <Grid
                   style={{ background: "green", textAlign: "center" }}

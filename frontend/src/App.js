@@ -15,6 +15,12 @@ import CFMProductList from "./components/CFMProductList";
 
 function App() {
   const userName="Ram@123";
+  const [prod,setProd]=useState({});
+  const modify=(data)=>{
+    const str=JSON.stringify(data);
+    console.log("OBJECT Recieved"+str);
+    setProd(data);
+  }
   
 
   
@@ -31,8 +37,8 @@ function App() {
         <Route path="/ChangePassword" element={<CFMChangePassword />} />
         <Route path="/DashBoard" element={<CFMDashboard user={userName}/>} />
         <Route path="/ForgotPassword" element={<CFMForgotPassword />} />
-        <Route path="/Productinfo" element={<CFMProductInfo user={userName}  />} />
-        <Route path="/ProductList" element={<CFMProductList user={userName}  />} />
+        <Route path="/Productinfo" element={<CFMProductInfo user={userName} prod={prod} />} />
+        <Route path="/ProductList" element={<CFMProductList user={userName} modify={modify}  />} />
         
       </Routes>
     </div>

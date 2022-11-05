@@ -11,9 +11,9 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {BrowserRouter as Router,Link,Route,Routes} from 'react-router-dom' 
+import {Link} from 'react-router-dom';
 import "../styles.css";
-import ProductInfo from './CFMProductInfo';
+
 export class CFMProductList extends Component {
   constructor(props) {
     super(props);
@@ -46,9 +46,23 @@ export class CFMProductList extends Component {
           
         },
 
-      ]
+      ],
+      selectedProduct:{}
     }
-    //this.handlethisProduct=this.handlethisProduct.bind(this);
+  
+  this.handleClick=this.handleClick.bind(this);
+  }
+   sendData=()=>{
+    
+    this.props.modify(this.state.selectedProduct);
+   }
+  handleClick=(index)=>{
+    const p=this.state.products[index];
+    const str=JSON.stringify(p);
+    console.log("OBJECT SELECTED"+str);
+    this.props.modify(p);
+    
+
   }
 
   render() {
@@ -64,7 +78,7 @@ export class CFMProductList extends Component {
                 aria-label="menu"
                 sx={{ mr: "70%", flexGrow: 0 }}
               >
-                <ArrowBackIcon style={{ padding: "10px" }} />
+                <ArrowBackIcon  />
 
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
@@ -95,7 +109,7 @@ export class CFMProductList extends Component {
       <div>
 
         {
-          this.state.products.map((p)=>{
+          this.state.products.map((p,index)=>{
             return(
               
               
@@ -117,7 +131,7 @@ export class CFMProductList extends Component {
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
         
-        <Button key={p.productId}   variant="contained" color="primary">
+        <Button key={p.productId} onClick={this.handleClick.bind(this,index)}   variant="contained" color="primary">
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
                   className="nav nav-link"
