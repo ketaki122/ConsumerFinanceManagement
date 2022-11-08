@@ -16,17 +16,18 @@ import com.finance.Service.ProductHistoryService;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200" )
 @RequestMapping("/producthistory/api")
-public class ProductHistoryController {
+public class ProductHistoryController
+{
 	@Autowired
 	ProductHistoryService prodhistService;
 	@PostMapping("/ph")
-	public boolean addProduct(@RequestBody ProductHistory prodhist) {
+	public boolean addProduct(@RequestBody ProductHistory prodhist)
+	{
 		return prodhistService.addProduct(prodhist);
-				
 	}
 	@GetMapping("/ph")
-	public List<ProductHistory> getAll(){
+	public List<ProductHistory> getAll()
+	{
 		return prodhistService.viewProduct();
 	}
-	
 }

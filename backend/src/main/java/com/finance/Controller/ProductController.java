@@ -22,22 +22,22 @@ public class ProductController {
 	@Autowired
 	ProductService prodService;
 	@GetMapping("/products")
-	public List<Product> getAll(){
+	public List<Product> getAll()
+	{
 		return prodService.viewProduct();
 	}
 	@GetMapping("/products/{prodid}")//Find by ID
-	public Product getProductById(@PathVariable(value="prodid")int prodid) {
+	public Product getProductById(@PathVariable(value="prodid")int prodid)
+	{
 		return prodService.findProduct(prodid);
 	}
 	@PostMapping("/products")
-	public String addProducts(@RequestBody Product product) {
+	public String addProducts(@RequestBody Product product)
+	{
 		return prodService.addProducts(product);
 	}
 	@GetMapping("/products/productname/{prodname}")//Find by ID
 	public  List<Product> getProductsByName(@PathVariable(value="prodname")String prodname) {
 		return prodService.viewProductByName(prodname);
 	}
-	
-	
-
 }

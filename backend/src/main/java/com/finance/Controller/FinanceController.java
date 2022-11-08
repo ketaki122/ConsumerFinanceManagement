@@ -54,6 +54,7 @@ public class FinanceController {
      public String addDetails(@RequestBody User userDet) {
    	 return finSer.addDetails(userDet);
      }
+
      @GetMapping("/carddetails/{regid}")
      public CardDetails getCardDet(@PathVariable(value="regid")long regid){
    	  return finSer.getCardDetailsByRegId(regid);

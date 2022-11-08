@@ -19,12 +19,14 @@ import com.finance.Service.UserService;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/userRest/api")
-public class UserController {
+public class UserController
+{
 	@Autowired
 	UserService userService;
 	
 	@GetMapping("/userfind/{uname}")
-	public User finUserByUname(@PathVariable(value="uname") String uname) {
+	public User finUserByUname(@PathVariable(value="uname") String uname)
+	{
 		return userService.findUserByUname(uname);
 	}
 	
@@ -53,7 +55,8 @@ public class UserController {
 	{
 		User u;
 		u=userService.findUserByUname(uname);
-		if(u==null) {
+		if(u==null)
+		{
 //			username does not exist
 			return 1;
 		}

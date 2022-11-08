@@ -10,7 +10,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Product")
-public class Product {
+public class Product
+{
 	@Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ")
 	  @SequenceGenerator(sequenceName = "productid_seq", allocationSize = 1, name = "CUST_SEQ")
@@ -88,7 +89,8 @@ public class Product {
 		this.emi_1y = emi_1y;
 	}
 	
-	public Product() {
+	public Product()
+	{
 		super();
 	}
 	
