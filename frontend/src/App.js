@@ -1,7 +1,9 @@
 import './App.css';
+import './styles.css';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom' 
 import CFMLogin,{Loginwithrouter} from "./components/CFMLogin";
 import Homepage from "./components/homepage";
+import React, { useState } from 'react'; 
 import CFMRegistration,{Registerwithrouter} from "./components/CFMRegistration";
 import CFMAdminDashboard from "./components/CFMAdminDashboard";
 import CFMAdminLogin from "./components/CFMAdminLogin";
@@ -10,9 +12,18 @@ import CFMDashboard from "./components/CFMDashboard";
 import CFMForgotPassword from "./components/CFMForgotPassword";
 import CFMProductInfo from "./components/CFMProductInfo";
 import CFMProductList from "./components/CFMProductList";
-import axios from 'axios'
 
 function App() {
+  const userName="Ram@123";
+  const [prod,setProd]=useState({});
+  const modify=(data)=>{
+    const str=JSON.stringify(data);
+    console.log("OBJECT Recieved"+str);
+    setProd(data);
+  }
+  
+
+  
   return (
     <Router>
     <div>
@@ -24,10 +35,10 @@ function App() {
         <Route path="/AdminDashboard" element={<CFMAdminDashboard />} />
         <Route path="/AdminLogin" element={<CFMAdminLogin/>} />
         <Route path="/ChangePassword" element={<CFMChangePassword />} />
-        <Route path="/DashBoard" element={<CFMDashboard />} />
+        <Route path="/DashBoard" element={<CFMDashboard user={userName}/>} />
         <Route path="/ForgotPassword" element={<CFMForgotPassword />} />
-        <Route path="/Productinfo" element={<CFMProductInfo />} />
-        <Route path="/ProductList" element={<CFMProductList />} />
+        <Route path="/Productinfo" element={<CFMProductInfo user={userName} prod={prod} />} />
+        <Route path="/ProductList" element={<CFMProductList user={userName} modify={modify}  />} />
         
       </Routes>
     </div>
