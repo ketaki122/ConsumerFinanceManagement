@@ -1,10 +1,12 @@
 import './App.css';
 import './styles.css';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom' 
-import CFMLogin,{Loginwithrouter} from "./components/CFMLogin";
+import CFMLogin from "./components/CFMLogin";
+import {Loginwithrouter} from "./components/CFMLogin";
 import Homepage from "./components/homepage";
 import React, { useState } from 'react'; 
-import CFMRegistration,{Registerwithrouter} from "./components/CFMRegistration";
+import CFMRegistration from "./components/CFMRegistration";
+import {Registerwithrouter} from "./components/CFMRegistration";
 import CFMAdminDashboard from "./components/CFMAdminDashboard";
 import CFMAdminLogin from "./components/CFMAdminLogin";
 import CFMChangePassword from "./components/CFMChangePassword";
