@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Moment from "moment";
 import "../styles.css";
-import { Link } from "react-router-dom";
+import { Link,Navigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -25,6 +25,8 @@ export class CFMDashboard extends Component {
     super(props);
     this.state = {
       userName: "Ram@123",
+      logout:this.props.login,
+      
       cardDetails: {
         cardNumber: "45678912901",
         cardHolder: "Ram Kumar",
@@ -64,6 +66,12 @@ export class CFMDashboard extends Component {
         },
       ],
     };
+    this.handleLogout=this.handleLogout.bind(this);
+  }
+  handleLogout=()=>{
+    this.props.setlogin(false);
+    console.log("executed");
+    this.setState({logout:this.props.login});
   }
 
   render() {
@@ -117,15 +125,16 @@ export class CFMDashboard extends Component {
               <Typography sx={{ ml: 2, flexGrow: 1 }}>
                 Hi , {this.state.userName}
               </Typography>
-              <Button variant="outlined" color="inherit">
-                <Link
-                  style={{ color: "white", textDecoration: "none" }}
-                  className="nav nav-link"
-                  to="/userlogin"
-                >
-                  LOGOUT
-                </Link>
+              <form onSubmit={()=>this.handleLogout()}>
+              <Button type="submit"  variant="outlined" color="inherit">
+               LOGOUT
               </Button>
+              {!this.state.logout && (
+          <Navigate to="/userlogin" replace={true} />
+        )}
+              </form>
+              
+            
             </Toolbar>
           </AppBar>
         </Box>

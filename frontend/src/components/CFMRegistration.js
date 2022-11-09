@@ -11,8 +11,8 @@ import FormLabel from '@mui/material/FormLabel';
 
 export class CFMRegistration extends Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
 this.state={
     name:'',
     dob:'',

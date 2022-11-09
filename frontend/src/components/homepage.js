@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import "../styles.css";
 
-import {Link} from 'react-router-dom' 
+import {Link,Navigate} from 'react-router-dom' 
 
 const styles={
   root: {
@@ -116,7 +116,7 @@ export class Homepage extends Component {
             <Grid container>
               
               <Grid item xs={6}>  <br/>
-              <Button style={{marginLeft:'20%'}}variant='contained'>Buy Now</Button>
+              <Button style={{marginLeft:'20%'}} component={Link} to='/userlogin' variant='contained'>Buy Now</Button>
               <Box sx={{ minWidth: 120 }}>
    
     </Box>

@@ -71,7 +71,7 @@ export class CFMProductInfo extends Component {
               <Typography sx={{ ml: 2,  flexGrow: 1 }}>
                 Hi , {this.state.userName}
               </Typography>
-              <Button  variant="outlined" color="inherit">
+              <Button onClick={()=>{this.props.setlogin(false)}}  variant="outlined" color="inherit">
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
                   className="nav nav-link"
