@@ -13,8 +13,8 @@ import { Link,Navigate, useNavigate} from "react-router-dom";
 
 export class CFMRegistration extends Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
 this.state={
     uname:'',  
     email:'',
