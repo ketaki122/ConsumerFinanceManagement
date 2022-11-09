@@ -8,23 +8,24 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import axios from 'axios';
+import { Link,Navigate, useNavigate} from "react-router-dom";
 
 export class CFMRegistration extends Component {
 
   constructor(props){
     super(props);
 this.state={
-    name:'',
-    dob:'',
-    emailId:'',
-    phoneNo:'',
-    username:'',
-    password:'',
+    uname:'',  
+    email:'',
+    phone:'',
+    upass:'',
     address:'',
-    cardType:'',
-    bank:'',
-    savingAccountNo:'',
-    ifscCode:'',
+    cardtype:'',
+    bankname:'',
+    acc_no:'',
+    ifsc_code:'',
+    status:''
 }
 }  
 
@@ -42,23 +43,30 @@ console.log(this.state)
 }
 
 handleSubmit=(e)=>{
-     
+  //const navigate = useNavigate();
   e.preventDefault();
 const userdata={
-    name:this.state.name,
-    dob:this.state.dob,
-    emailId:this.state.emailId,
-    phoneNo:this.state.phoneNo,
-    username:this.state.username,
-    password:this.state.password,
+    uname:this.state.uname,
+    email:this.state.email,
+    phone:this.state.phone,
+    upass:this.state.upass,
     address:this.state.address,
-    cardType:this.state.cardType,
-    bank:this.state.bank,
-    savingAccountNo:this.state.savingAccountNo,
-    ifscCode:this.state.ifscCode
+    cardtype:this.state.cardtype,
+    bankname:this.state.bankname,
+    acc_no:this.state.acc_no,
+    ifsc_code:this.state.ifsc_code,
+    status:'admin'
 }
 console.log(userdata)
-
+axios.post('http://localhost:8080/userRest/api/user',userdata)
+.then((data1)=>{
+  console.log("Hi");
+console.log(data1);
+this.props.navigate('/userlogin');
+})
+.catch((err)=>{
+  console.log(err)
+})
 
 }
 
@@ -73,15 +81,14 @@ console.log(userdata)
          <Grid item sm>
          <Typography textAlign={'center'} variant="h4" margin={'10px auto 10px auto'}>Registration Form</Typography>
          <form onSubmit={this.handleSubmit} autoComplete='off'>
-         <TextField label='Name' variant="outlined" margin='normal' onChange={this.handleChange} name='name' type='name'fullWidth/>
-         <p>Date of Birth
-         <TextField  variant="outlined"onChange={this.handleChange} name='dob' type='date'fullWidth/></p>
-         <TextField label='Email id' variant="outlined"onChange={this.handleChange} margin='normal' name='emailId' type='emailId'fullWidth/>
+         <TextField label='User Name' variant="outlined" margin='normal' onChange={this.handleChange} name='uname' type='name'fullWidth/>
+       
+         <TextField label='Email id' variant="outlined"onChange={this.handleChange} margin='normal' name='email' type='emailId'fullWidth/>
          
          
-         <TextField label='Phone no.' variant="outlined"onChange={this.handleChange} margin='normal' name='phoneNo' type='phonenumber'fullWidth/>
-         <TextField label='User Name' variant="outlined"onChange={this.handleChange} margin='normal' name='username' type='username'fullWidth/>
-         <TextField label='Password' variant="outlined"onChange={this.handleChange} margin='normal' name='password' type='password'fullWidth/>
+         <TextField label='Phone no.' variant="outlined"onChange={this.handleChange} margin='normal' name='phone' type='phonenumber'fullWidth/>
+        
+         <TextField label='Password' variant="outlined"onChange={this.handleChange} margin='normal' name='upass' type='password'fullWidth/>
          <TextField label='Confirm Password' variant="outlined" onChange={this.handleChange} margin='normal' name='cfpassword' type='password'fullWidth/>
          <TextField label='Address' variant="outlined"onChange={this.handleChange} margin='normal' name='address' type='address'fullWidth/>
          <p></p>
@@ -90,7 +97,7 @@ console.log(userdata)
       <RadioGroup
         row
         aria-labelledby="demo-form-control-label-placement"
-        name="cardType"
+        name="cardtype"
         defaultValue="top"
         onChange={this.handleRadioChange.bind(this)}
       >
@@ -99,12 +106,12 @@ console.log(userdata)
 
       </RadioGroup>
     </FormControl>
-         <TextField label='Select Bank' variant="outlined" onChange={this.handleChange} margin='normal'name='bank' type='bank'fullWidth/>
-         <TextField label='Saving Account No:' variant="outlined" onChange={this.handleChange} margin='normal' name='ifscCode' type='savingAccountNo'fullWidth/>
-         <TextField label='IFSC code' variant="outlined"type='ifscCode' onChange={this.handleChange} fullWidth/><p></p>
-         <Button  variant='contained' color='primary' style={{marginLeft:"30%"}} type='submit'  >Submit</Button>
+         <TextField label='Select Bank' variant="outlined" onChange={this.handleChange} margin='normal'name='bankname' type='bank'fullWidth/>
+         <TextField label='Saving Account No:' variant="outlined" onChange={this.handleChange} margin='normal' name='acc_no' type='savingAccountNo'fullWidth/>
+         <TextField label='IFSC code' variant="outlined"type='ifsc_code' onChange={this.handleChange} fullWidth/><p></p>
+         <Button  variant='contained' color='primary' style={{marginLeft:"30%"}} type='submit'  >REGISTER</Button>
          
-         <Button  textAlign={'right'} variant='contained' color='primary'style={{marginLeft:"10%"}} margin='normal  'type='reset'>Reset</Button>
+         <Button  textAlign={'right'} variant='contained' color='primary'style={{marginLeft:"10%"}} margin='normal  'type='reset'>RESET</Button>
          </form><p></p><p></p>
          <p style={{marginLeft:'28%'}} >Already a member? <a href='/userlogin'>Login Here</a> </p>
          
@@ -115,6 +122,11 @@ console.log(userdata)
         
     )
   }
+}
+
+export function Registerwithrouter(props){
+  const navigate=useNavigate()
+  return (<CFMRegistration navigate={navigate}></CFMRegistration>)
 }
 
 export default CFMRegistration
