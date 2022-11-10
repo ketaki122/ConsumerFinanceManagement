@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -16,6 +15,9 @@ public class CardDetails {
 	@Id
 	@Column(name="regid")
 	private long regid;
+	
+	
+	
 	@Column(name="cardno")
 	private int cardno;
 	

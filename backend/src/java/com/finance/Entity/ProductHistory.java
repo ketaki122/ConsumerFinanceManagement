@@ -1,5 +1,7 @@
 package com.finance.Entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name="ProductHistory")
@@ -31,6 +36,10 @@ public class ProductHistory {
 	private long ammount_bal;
 	@Column(name="price")
 	private int price;
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "date")
+    private Date date;
+	
 	public int getPrice() {
 		return price;
 	}

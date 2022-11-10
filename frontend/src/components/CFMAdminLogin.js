@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import { Link ,Navigate} from "react-router-dom";
 
-
+///UserDetailsRest/api/cardDetails
 export class CFMAdminLogin extends Component {
   constructor(props){
     super(props);

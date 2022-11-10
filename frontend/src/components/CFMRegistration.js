@@ -25,7 +25,8 @@ this.state={
     bankname:'',
     acc_no:'',
     ifsc_code:'',
-    status:''
+    status:'',
+ 
 }
 }  
 
@@ -41,7 +42,30 @@ handleRadioChange(e) {
 })
 console.log(this.state)
 }
+createCard=(id,card_type)=>{
+  const min_ = 100000000;
+  const max_ = 999999999;
+  const rand = min_ + Math.random() * (max_ - min_);
+  const newCard={
+    regid:id,
+    cardno:rand,
+    cardtype:card_type,
+    initialbal:card_type=="Gold"?50000:80000,
+    availbal:card_type=="Gold"?50000:80000
 
+
+
+    
+  }
+  axios.post(`http://localhost:8080/UserDetailsRest/api/cardDetails`, newCard ).then((data)=>{
+    console.log("CARD CREATED: "+ data);
+  }).catch((err)=>{console.log(err);});
+
+  
+
+
+
+}
 handleSubmit=(e)=>{
   //const navigate = useNavigate();
   e.preventDefault();
@@ -55,14 +79,18 @@ const userdata={
     bankname:this.state.bankname,
     acc_no:this.state.acc_no,
     ifsc_code:this.state.ifsc_code,
-    status:'admin'
+    status:'customer'
 }
-console.log(userdata)
+console.log(userdata);
+
 axios.post('http://localhost:8080/userRest/api/user',userdata)
 .then((data1)=>{
   console.log("Hi");
 console.log(data1);
-this.props.navigate('/userlogin');
+this.createCard(data1.data.regid,data1.data.cardtype);
+alert("User registered successfuly");
+this.props.navigate("/userlogin");
+
 })
 .catch((err)=>{
   console.log(err)
@@ -108,7 +136,7 @@ this.props.navigate('/userlogin');
     </FormControl>
          <TextField label='Select Bank' variant="outlined" onChange={this.handleChange} margin='normal'name='bankname' type='bank'fullWidth/>
          <TextField label='Saving Account No:' variant="outlined" onChange={this.handleChange} margin='normal' name='acc_no' type='savingAccountNo'fullWidth/>
-         <TextField label='IFSC code' variant="outlined"type='ifsc_code' onChange={this.handleChange} fullWidth/><p></p>
+         <TextField label='IFSC code' name="ifsc_code"variant="outlined"type='ifsc_code' onChange={this.handleChange} fullWidth/><p></p>
          <Button  variant='contained' color='primary' style={{marginLeft:"30%"}} type='submit'  >REGISTER</Button>
          
          <Button  textAlign={'right'} variant='contained' color='primary'style={{marginLeft:"10%"}} margin='normal  'type='reset'>RESET</Button>

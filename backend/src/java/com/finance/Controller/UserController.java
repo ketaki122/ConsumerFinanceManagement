@@ -17,7 +17,7 @@ import com.finance.Entity.User;
 import com.finance.Service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
 @RequestMapping("/userRest/api")
 public class UserController
 {
@@ -37,7 +37,7 @@ public class UserController
 	}
 
 	@PostMapping("/user")
-	public boolean addUser(@RequestBody User user)
+	public User addUser(@RequestBody User user)
 	{
 		return userService.addUser(user);
 	}

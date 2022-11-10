@@ -1,5 +1,6 @@
 package com.finance.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,11 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepo;
 	
 	@Override
-	public boolean addUser(User user) {
+	public User addUser(User user) {
 		userRepo.save(user);
-		return true;
+		List<User> myusers= new ArrayList<User>();
+		myusers=userRepo.findAll();
+		return myusers.get(myusers.size()-1);
 	}
 
 	@Override

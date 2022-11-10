@@ -14,7 +14,7 @@ import com.finance.Entity.ProductHistory;
 import com.finance.Service.ProductHistoryService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200" )
+@CrossOrigin("*" )
 @RequestMapping("/producthistory/api")
 public class ProductHistoryController
 {

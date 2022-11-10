@@ -19,55 +19,109 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import axios from 'axios';
 
 export class CFMDashboard extends Component {
   constructor(props) {
+    
     super(props);
+
     this.state = {
-      userName: "Ram@123",
+      userName: this.props.user,
       logout:this.props.login,
+      details:{
+        uname:'',  
+        email:'',
+        phone:'',
+        upass:'',
+        address:'',
+        cardtype:'',
+        bankname:'',
+        acc_no:'',
+        ifsc_code:'',
+        isVerified:true},
       
       cardDetails: {
-        cardNumber: "45678912901",
-        cardHolder: "Ram Kumar",
-        validity: Moment().format("MM/YY"),
-        cardType: "Gold",
-        status: "Activated",
-        totalCredit: 40000,
-        creditUsed: 10000,
-        balance: 30000,
+        
+    cardno:'',
+    cardtype:'',
+    initialbal:'',
+    availbal:'',
+    validity:''
       },
       productsPurchased: [
-        { productId:1,
-          productName: "Puma Jacket",
-          productCost: 3000,
-          productType: "clothing",
-          datePurchased: Moment("02-11-2022").format("DD-MM-YY"),
-        },
-        {productId:3,
-          productName: "Redmi Note 5",
-          productCost: 7000,
-          productType: "electronics",
-          datePurchased: Moment("09-18-2022").format("DD-MM-YY"),
-        },
+      
       ],
       recentTransactions: [
-        {
-          transactionId: "2201ABC",
-          transactionDate: Moment("02-11-2022").format("DD-MM-YY"),
-          amountPaid: 3000,
-          product: "Puma Jacket",
-        },
-        {
-          transactionId: "2301XYZ",
-          transactionDate: Moment("09-18-2022").format("DD-MM-YY"),
-          amountPaid: 7000,
-          product: "Redmi Note 5",
-        },
+       
       ],
     };
     this.handleLogout=this.handleLogout.bind(this);
   }
+  componentDidMount=()=>{
+    this.getUser();
+    
+    
+
+
+  }
+  getProducts=(id)=>{
+    axios.get(`http://localhost:8080/producthistory/api/ph`).then((res)=>{console.log(res);
+    const newArr=[];
+    res.data.map((x)=>{
+      if(x.regid==this.state.details.regid){
+        newArr.push(x);
+      }
+    });
+
+    
+   
+
+    this.setState({productsPurchased:newArr,recentTransactions:newArr});
+  }).catch((err)=>{console.log(err);})
+
+  }
+  getUser=()=>{
+    axios.get(`http://localhost:8080/userRest/api/userfind/${this.state.userName}`).then((res)=>{
+      console.log("RESPONSE"+JSON.stringify(res.data));
+      this.setState({details:{
+        uname:res.data.uname,  
+        email:res.data.email,
+        phone:res.data.phone,
+        upass:res.data.upass,
+        address:res.data.address,
+        cardtype:res.data.cardtype,
+        bankname:res.data.bankname,
+        acc_no:res.data.acc_no,
+        ifsc_code:res.data.ifsc_code,
+        isVerified:res.data.isVerified=="true"?true:false,
+      regid:res.data.regid}
+
+      });
+      this.getCard(res.data.regid);
+      this.getProducts(res.data.regid);
+  
+    }).catch((err)=>{
+      console.log(err)
+    })
+
+  }
+ getCard=(id)=>{
+axios.get(`http://localhost:8080/UserDetailsRest/api/cardDetails/${id}`).then((res)=>{
+  console.log("CARD RESPONSE"+JSON.stringify(res.data));
+  this.setState({cardDetails:{
+    regid:res.data.regid,
+    cardno:res.data.cardno,
+    cardtype:res.data.cardtype,
+    initialbal:res.data.initialbal,
+    availbal:res.data.availbal,
+    validity:Moment(res.data.validity).format("MM/YY")
+   }
+
+  });
+
+}).catch((err)=>{console.log(err)});
+ }
   handleLogout=()=>{
     this.props.setlogin(false);
     console.log("executed");
@@ -97,7 +151,7 @@ export class CFMDashboard extends Component {
         border: 0,
       },
     }));
-
+    console.log("CURRUSER"+JSON.stringify(this.state.details));
     return (
       <div>
         <Box sx={{ flexGrow: 1 }}>
@@ -153,7 +207,7 @@ export class CFMDashboard extends Component {
                 </Grid>
                 <Grid item xs={7}>
                   <p className="value">
-                    {this.state.cardDetails.cardNumber}
+                    {this.state.cardDetails.cardno}
                    
                   </p>
                 </Grid>
@@ -165,12 +219,12 @@ export class CFMDashboard extends Component {
                 </Grid>
                 <Grid item xs={7}>
                   <p className="value">
-                    {this.state.cardDetails.cardHolder}
+                    {this.state.details.uname}
                  
                   </p>
                 </Grid>
               </Grid>
-              <br />
+              <br /><div style={{display:`${this.state.details.isVerified?"block":"none"}`}}>
               <Grid container>
                 <Grid item xs={3}>
                   <p className="attribute">Valid till :</p>
@@ -182,6 +236,9 @@ export class CFMDashboard extends Component {
                   </p>
                 </Grid>
               </Grid>
+
+              </div>
+              
               <br />
               <Grid container>
                 <Grid item xs={3}>
@@ -189,7 +246,7 @@ export class CFMDashboard extends Component {
                 </Grid>
                 <Grid item xs={7}>
                   <p className="value">
-                    {this.state.cardDetails.cardType}
+                    {this.state.cardDetails.cardtype}
                   
                   </p>
                 </Grid>
@@ -197,19 +254,22 @@ export class CFMDashboard extends Component {
               <br />
               <Grid container>
                 <Grid
-                  style={{ background: "green", textAlign: "center" }}
+                  style={{backgroundColor:`${this.state.details.isVerified?"lightgreen":"lightcoral"}`,textAlign:"center"}}
                   item
                   xs={12}
                 >
                   <p className="card-status">
-                    {this.state.cardDetails.status.toUpperCase()}
+                    {this.state.details.isVerified?"ACTIVATED":"NOT ACTIVATED"}
                   </p>
                 </Grid>
               </Grid>
             </Item>
           </div>
           <br />
-          <div>
+          <div style={{display:`${this.state.details.isVerified?"none":"block"}`, textAlign:"center", marginLeft:"auto",arginRight:"auto", width:"100%"}}>
+            <h4>Please wait for admin to approve you...</h4>
+          </div>
+          <div style={{display:`${this.state.details.isVerified?"block":"none"}`}}>
             <Grid container className="acc-info">
               <Grid item xs={12} sm={12} md={4}>
                 <Grid container>
@@ -218,7 +278,7 @@ export class CFMDashboard extends Component {
                   </Grid>
                   <Grid item xs={8}>
                     <p className="credit">
-                      INR {this.state.cardDetails.totalCredit}
+                      INR {this.state.cardDetails.initialbal}
                     </p>
                   </Grid>
                 </Grid>
@@ -230,7 +290,7 @@ export class CFMDashboard extends Component {
                   </Grid>
                   <Grid item xs={8}>
                     <p className="credit-used">
-                      INR {this.state.cardDetails.creditUsed}
+                      INR {this.state.cardDetails.initialbal-this.state.cardDetails.availbal}
                     </p>
                   </Grid>
                 </Grid>
@@ -242,19 +302,19 @@ export class CFMDashboard extends Component {
                   </Grid>
                   <Grid item xs={8}>
                     <p className="balance">
-                      INR {this.state.cardDetails.balance}
+                      INR {this.state.cardDetails.availbal}
                     </p>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </div>
-          <div className="products-title">
+          <div style={{display:`${this.state.details.isVerified?"block":"none"}`}} className="products-title">
             <p>PRODUCTS PURCHASED</p>
           </div>
           <br />
 
-          <div className="products-purchased">
+          <div style={{display:`${this.state.details.isVerified?"block":"none"}`}} className="products-purchased">
             {this.state.productsPurchased.map((x) => {
               return (
                 <Grid className="product" container>
@@ -273,7 +333,7 @@ export class CFMDashboard extends Component {
                             </Grid>
                             <Grid item xs={4}>
                               <p className="value-transactions">
-                                {x.productName}
+                                {x.prodname}
                               </p>
                             </Grid>
                           </Grid>
@@ -282,7 +342,7 @@ export class CFMDashboard extends Component {
                           <Grid container>
                             <Grid item xs={4}>
                               <p className="attribute-transactions">
-                                AMOUNT PAID :
+                                PRICE
                               </p>
                             </Grid>
                             <Grid item xs={4}>
@@ -290,7 +350,7 @@ export class CFMDashboard extends Component {
                                 style={{ color: "lightcoral" }}
                                 className="value-transactions"
                               >
-                                INR {x.productCost}
+                                INR {x.price}
                               </p>
                             </Grid>
                           </Grid>
@@ -304,8 +364,9 @@ export class CFMDashboard extends Component {
 
             <br />
           </div>
+          <div style={{display:`${this.state.details.isVerified?"block":"none"}`}}>
 
-          <div className="products-title">
+          <div  className="products-title">
             <p>RECENT TRANSACTIONS</p>
           </div>
           <div className="transactions">
@@ -314,7 +375,7 @@ export class CFMDashboard extends Component {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>PRODUCT</StyledTableCell>
-                    <StyledTableCell align="right">DATE</StyledTableCell>
+                    <StyledTableCell align="right">EMI PERIOD</StyledTableCell>
                     <StyledTableCell align="right">AMOUNT PAID</StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -322,13 +383,13 @@ export class CFMDashboard extends Component {
                   {this.state.recentTransactions.map((row) => (
                     <StyledTableRow key={row.transactionId}>
                       <StyledTableCell component="th" scope="row">
-                        {row.product}
+                        {row.prodname}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {row.transactionDate}
+                        {row.emi}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {row.amountPaid}
+                        {row.price/Math.floor(row.emi)}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -336,6 +397,8 @@ export class CFMDashboard extends Component {
               </Table>
             </TableContainer>
           </div>
+          </div>
+         
         </div>
       </div>
     );

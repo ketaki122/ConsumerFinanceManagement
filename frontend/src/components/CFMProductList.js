@@ -11,7 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from '@mui/material/Typography';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {Link} from 'react-router-dom' 
+import {Link} from 'react-router-dom' ;
+import axios from 'axios';
 import "../styles.css";
 
 export class CFMProductList extends Component {
@@ -20,46 +21,35 @@ export class CFMProductList extends Component {
     this.state = {
       userName:this.props.user,
       products:[
-        { 
-          productId:1,
-          productName: "Puma Jacket",
-          productCost: 3000,
-          productImageUrl:"https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_450,h_450/global/536969/01/fv/fnd/IND/fmt/png",
-          productType: "Clothing",
-          productDetails:"Made from 100% high quality leather to keep you warm durig winters. Suitable for Machine Wash."
-          
-        },
-        { productId:2,
-          productName: "Samsung TV",
-          productCost: 30000,
-          productImageUrl:"https://5.imimg.com/data5/FG/TR/MU/SELLER-56122824/samsung-32-smart-tv-500x500.jpg",
-          productType: "Electronics",
-          productDetails:"Ultra HD 4k picture Quality with Bass Sound and vibrant colors. 32 inch LED Display , Bluetooth connectivity, Smart TV."
-          
-        },
-        { productId:3,
-          productName: "Redmi Note 5",
-          productCost: 7000,
-          productType: "Electronics",
-          productImageUrl:"https://i01.appmifile.com/webfile/globalimg/Iris/E7S-black.png",
-          productDetails:"Sleek model with 13inch Display and 64MP camera, 5MP front camera with flash. 64GB Storage and Made in India"
-          
-        },
-
+        
       ],
       selectedProduct:{}
     }
+   
   
   this.handleClick=this.handleClick.bind(this);
+  }
+  componentDidMount=()=>{
+    this.getProducts();
+    
+    
+
+
+  }
+  getProducts=()=>{
+    axios.get(`http://localhost:8080/api/products`).then((res)=>{
+      this.setState({products:res.data});
+    }).catch((err)=>{console.log(err);})
   }
    sendData=()=>{
     
     this.props.modify(this.state.selectedProduct);
    }
   handleClick=(index)=>{
-    const p=this.state.products[index];
-    const str=JSON.stringify(p);
-    console.log("OBJECT SELECTED"+str);
+    const p=this.state.products[index].prodid;
+    //const str=JSON.stringify(p);
+    //console.log("OBJECT SELECTED"+str);
+    
     this.props.modify(p);
     
 
@@ -113,25 +103,25 @@ export class CFMProductList extends Component {
             return(
               
               
-              <Card key={p.productId} sx={{ display: 'flex' }}>
+              <Card key={p.prodId} sx={{ display: 'flex' }}>
                 
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
       <CardMedia
         component="img"
         sx={{ width: 151 , pl:1}}
-        image={p.productImageUrl}
-        alt={p.productName}
+        image={p.prodimage}
+        alt={p.prodName}
       />
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography style={{marginBottom:"20px"}} component="div" variant="h5">
-           {p.productName}
+           {p.prodName}
           </Typography>
           <Typography style={{marginBottom:"30px"}} variant="subtitle1" color="text.secondary" component="div">
-            {p.productDetails}
+            {p.proddesc}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
         
-        <Button key={p.productId} onClick={this.handleClick.bind(this,index)}   variant="contained" color="primary">
+        <Button key={p.prodId} onClick={this.handleClick.bind(this,index)}   variant="contained" color="primary">
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
                   className="nav nav-link"

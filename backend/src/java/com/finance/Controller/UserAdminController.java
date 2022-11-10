@@ -19,7 +19,7 @@ import com.finance.Service.AuthenticateUserService;
 import com.finance.Service.CardDetailsService;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin("*")
 @RequestMapping("/UserDetailsRest/api")
 
 public class UserAdminController
@@ -34,7 +34,7 @@ public class UserAdminController
 	{
 		return adService.getUserdetails();
 	}
-	/*@GetMapping("/userDetails/{regid}")
+	@GetMapping("/userDetails/{regid}")
 	public User getUserById(@PathVariable(value = "regid") long regid)
 	{
 		return adService.findUser(regid);
@@ -44,10 +44,10 @@ public class UserAdminController
 	return adService.addUser(user);
 	}
 	
-	@PutMapping("/userDetails/{regid}")
-	public boolean updateuserById(@PathVariable(value="regid") long regid)
+	@PutMapping("/userDetails/{regid}/{val}")
+	public boolean updateuserById(@PathVariable(value="regid") long regid,@PathVariable(value="val") boolean val)
 	{
-		return adService.updateUser(regid);
+		return adService.updateUser(regid, val);
 	}
 	@DeleteMapping("/userDetails/{regid}")
 	public boolean deleteUser(@PathVariable(value="regid") long regid)
@@ -59,7 +59,7 @@ public class UserAdminController
 	public boolean deleteUser(@RequestBody User user, long regid)
 	{
 		return adService.deleteUser(regid);
-	}*/
+	}
 
 	@GetMapping("/cardDetails")
 	public List<CardDetails> getAllCards()

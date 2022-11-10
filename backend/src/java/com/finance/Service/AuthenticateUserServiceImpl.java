@@ -68,11 +68,19 @@ public class AuthenticateUserServiceImpl implements AuthenticateUserService {
 
 }
 	@Override
-	public boolean updateUser(long regid) {
+	public boolean updateUser(long regid, boolean val) {
 		
 		User newusr=adRepo.findById(regid).get();
 //		newusr=user;
-	String verify="true";
+		String verify=null;
+		if(val){
+			verify="true";
+			
+		}
+		else if(!val) {
+			verify="False";
+		}
+
 	newusr.setIsVerified(verify);
 		adRepo.save(newusr);
 		// TODO Auto-generated method stub

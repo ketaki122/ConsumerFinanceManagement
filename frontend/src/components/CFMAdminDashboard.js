@@ -26,16 +26,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-
-
-export class CFMAdminDashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: "Admin@123",
-      logout:this.props.adminlogin,
-      usersRegistered:[
-        { regId:1,
+import axios from 'axios';
+/*  { regId:1,
           userName:"Ram@123",
           name:"Ram Kumar",
           acc_no:"37767085324",
@@ -55,8 +47,18 @@ export class CFMAdminDashboard extends Component {
           status:false,
           modalController:false,
           activatedRes:{yes:false,no:true}
-        }
-      ]
+        }*/
+
+export class CFMAdminDashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: "Admin@123",
+      logout:this.props.adminlogin,
+      usersRegistered:[
+      
+      ],
+      random:"a"
     }
   this.handleLogout=this.handleLogout.bind(this);
   this.handleOpen=this.handleOpen.bind(this);
@@ -64,6 +66,37 @@ export class CFMAdminDashboard extends Component {
   this.handlethisChange=this.handlethisChange.bind(this);
   this.handleActivation=this.handleActivation.bind(this);
   this.handleDelete=this.handleDelete.bind(this);
+}
+componentDidMount=()=>{
+ this.fetchData();
+}
+fetchData=()=>{
+  axios.get(`http://localhost:8080/userRest/api/user`).then((res)=>{
+    console.log("RESPONSE"+JSON.stringify(res.data));
+    const newArr=[]
+    res.data.map((x)=>{
+      if(x.isVerified=="true"){
+        x.isVerified=true;
+      }
+      else if(x.isVerified=="False"){
+        x.isVerified=false;
+      }
+      Object.assign(x, {modalController: false});
+      newArr.push(x);
+    })
+    this.setState({usersRegistered:newArr});
+
+  }).catch((err)=>{
+    console.log(err)
+  })
+}
+updateData=(regid,val)=>{
+  axios.put(`http://localhost:8080/UserDetailsRest/api/userDetails/${regid}/${val}`).then((res)=>{
+    console.log(res);
+    this.fetchData();
+  }).catch((err)=>{
+    console.log(err)
+  })
 }
 handleLogout=(idx)=>{
   this.props.setAdminlogin(false);
@@ -99,12 +132,12 @@ handlethisChange=(e,i)=>{
   this.state.usersRegistered.map((obj)=>{
    if(this.state.usersRegistered.indexOf(obj)==i){
      if(e.target.value=="yes"){
-      obj.activatedRes.yes=true;
-      obj.activatedRes.no=false;
+      obj.isVerified=true;
+  
      }
      else if(e.target.value=="no"){
-      obj.activatedRes.yes=false;
-      obj.activatedRes.no=true;
+      obj.isVerified=false;
+    
      }
     
    }
@@ -114,29 +147,27 @@ handlethisChange=(e,i)=>{
 
 }
 handleActivation=(p)=>{
-  const newArr=[];
-   this.state.usersRegistered.map((obj)=>{
-    if(this.state.usersRegistered.indexOf(obj)==p){
-      if(obj.activatedRes.yes==true && obj.activatedRes.no==false){
-        obj.status=true;
-      }
-      else{
-        obj.status=false;
-      }
-      obj.modalController=false;
-     
-    }
-    newArr.push(obj);
-  });
-    this.setState({usersRegistered:newArr});
+  const id=this.state.usersRegistered[p].regid;
+  const val=this.state.usersRegistered[p].isVerified;
+this.updateData(id,val);
 
 
+
+}
+deleteCard=(idno)=>{
+  axios.delete(`http://localhost:8080/UserDetailsRest/api/cardDetails/${idno}`).then((res)=>{console.log("card deleted:"+res)}).catch((err)=>{console.log(err)})
 }
 handleDelete=(key)=>{
 
-const newArr=this.state.usersRegistered.filter((x)=>{return this.state.usersRegistered.indexOf(x)!=key;})
-this.setState({usersRegistered:newArr});
+/*const newArr=this.state.usersRegistered.filter((x)=>{return this.state.usersRegistered.indexOf(x)!=key;})
+this.setState({usersRegistered:newArr});*/
+const id=this.state.usersRegistered[key].regid;
+axios.delete(`http://localhost:8080/UserDetailsRest/api/userDetails/${id}`).then((res)=>{console.log(res);
+this.deleteCard(id);
+this.fetchData();}).catch((err)=>{console.log(err)})
+
 }
+
   render() {
     const str=JSON.stringify(this.state.usersRegistered);
     console.log("USERS:"+str);
@@ -175,20 +206,21 @@ this.setState({usersRegistered:newArr});
         <Toolbar>
           <IconButton
             size="large"
+            disabled="true"
             edge="start"
             color="inherit"
             aria-label="menu"
             sx={{ mr: "70%", flexGrow: 0 }}
           >
-            <LocalMallIcon  />
+            
 
-            <Link
+            <Link disabled="true"
               style={{ color: "white", textDecoration: "none" }}
               className="nav nav-link"
               to="/ProductList"
             >
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Products{" "}
+                {" "}
               </Typography>
             </Link>
           </IconButton>
@@ -213,7 +245,7 @@ this.setState({usersRegistered:newArr});
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>NAME</StyledTableCell>
+                   
                     <StyledTableCell align="right">UNAME</StyledTableCell>
                     <StyledTableCell align="right">ACCOUNT NO.</StyledTableCell>
                     <StyledTableCell clign="right">IFSC  CODE     </StyledTableCell>
@@ -226,24 +258,22 @@ this.setState({usersRegistered:newArr});
                 </TableHead>
                 <TableBody>
                   {this.state.usersRegistered.map((row,index) => (
-                    <StyledTableRow key={row.regId}>
+                    <StyledTableRow key={row.regid}>
                       <StyledTableCell component="th" scope="row">
-                        {row.name}
+                        {row.uname}
                       </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {row.userName}
-                      </StyledTableCell>
+                     
                       <StyledTableCell align="right">
                         {row.acc_no}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {row.ifsc}
+                        {row.ifsc_code}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {row.cardType}
+                        {row.cardtype}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        <p style={{color:`${row.status?"green":"crimson"}`}}>{row.status?"Approved":"Pending"}</p>
+                        <p style={{color:`${row.isVerified?"green":"crimson"}`}}>{row.isVerified?"Approved":"Pending"}</p>
                       </StyledTableCell>
                       <StyledTableCell align="right">
                       <IconButton onClick={()=>this.handleOpen(index)}  key={index} aria-label="delete">
@@ -271,8 +301,8 @@ this.setState({usersRegistered:newArr});
                           name="row-radio-buttons-group"
                           onChange={(e)=>this.handlethisChange(e,index)}
                         >
-                          <FormControlLabel value="yes"checked={row.activatedRes.yes} control={<Radio />} label="Yes" />
-                          <FormControlLabel value="no" checked={row.activatedRes.no} control={<Radio />} label="No" />
+                          <FormControlLabel value="yes"checked={row.isVerified} control={<Radio />} label="Yes" />
+                          <FormControlLabel value="no" checked={!row.isVerified} control={<Radio />} label="No" />
                           
                          
                         </RadioGroup>

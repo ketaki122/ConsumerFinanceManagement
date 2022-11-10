@@ -16,7 +16,7 @@ import com.finance.Service.ProductService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200" )
+@CrossOrigin("*" )
 @RequestMapping("/api")
 public class ProductController {
 	@Autowired

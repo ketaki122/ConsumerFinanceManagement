@@ -19,7 +19,7 @@ import com.finance.Repository.UserRepository;
 import com.finance.Service.FinanceService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin( "*")
 @RequestMapping("financeRest/api")
 public class FinanceController {
 	@Autowired
