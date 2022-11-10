@@ -11,7 +11,7 @@ import com.finance.Entity.Admin;
 import com.finance.Service.AdminLoginService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
 @RequestMapping("/adminRest/api")
 public class AdminLoginController {
     @Autowired

@@ -14,7 +14,7 @@ import com.finance.Entity.CardDetails;
 import com.finance.Service.CardDetailsService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200" )
+@CrossOrigin("*" )
 @RequestMapping("/cardapi")
 public class CardController {
 	@Autowired

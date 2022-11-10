@@ -7,7 +7,7 @@ import com.finance.Entity.User;
 public interface AuthenticateUserService {
 	public List<User> getUserdetails();
 	//public boolean updateUser(Userdetails user);
-		public boolean updateUser(long regid);
+		public boolean updateUser(long regid, boolean val);
 		
 		public User findUser(long regid);
 		public boolean deleteUser(long regid);

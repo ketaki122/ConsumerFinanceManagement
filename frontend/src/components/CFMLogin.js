@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 class CFMLogin extends Component {
 
@@ -42,16 +42,16 @@ axios.get(`http://localhost:8080/userRest/api/uservalidate/${uname}/${upass}`)
 .then((data1)=>{console.log("Hi");
 console.log(data1);
 if(data1.data==2){
-  this.props.setlogin(true);
+  this.props.setlogin(true, this.state.uname,this.state.upass);
 
 }
 else if(data1.data==1){
   alert("Username does not exist");
-  this.props.setlogin(false);
+  this.props.setlogin(false,this.state.uname,this.state.upass);
 }
 else {
  alert("Wrong password")
- this.props.setlogin(false);
+ this.props.setlogin(false,this.state.uname,this.state.upass);
 }
 this.setState({login:this.props.login});
 })
@@ -76,7 +76,7 @@ this.setState({login:this.props.login});
         <TextField  label='Username' name='uname' value={this.state.uname} variant="outlined" margin='normal' onChange={this.handleChange} type='username' fullWidth />
         <TextField  label='Password' name='upass' value={this.state.upass} variant="outlined" margin='normal' onChange={this.handleChange} type='password' fullWidth/>
         <Button   variant='contained' color='primary'type='submit'>LOG IN</Button><p></p>
-        
+        {this.state.login && <Navigate to="/Dashboard"/>}
         </form><p><a href='ForgotPassword'>Forgot Password?</a></p>
         <p style={{marginLeft:'62%'}} >New User? <a href='/register'>Register here</a></p>
         </Grid>
